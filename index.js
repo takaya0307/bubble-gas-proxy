@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.post("/proxy", async (req, res) => {
   try {
-    const gasUrl = "https://script.google.com/macros/s/AKfycbzsRD8BEvqFxhy_9cRfHGpXMyZSMP5FQ3ro9ijgv9frfMP-VFMVfhsQsOEf38vGyA/exec";
+    const gasUrl = "https://script.google.com/macros/s/AKfycbyzi95D5EuwPX1nStlZuQNteXL9fxwdWipaddeJvAcTVyMvkN19t7ANHD1E93V7T2XB/exec";
 
     // ステップ1: POSTを送信（リダイレクトを自動追わず、自分で処理）
     const postResponse = await axios.post(gasUrl, req.body, {
