@@ -13,24 +13,23 @@ app.post("/proxy", async (req, res) => {
     // ステップ1: POSTを送信（リダイレクトを自動追わず、自分で処理）
     const postResponse = await axios.post(gasUrl, req.body, {
       headers: { "Content-Type": "application/json" },
-      // maxRedirects: 0, // リダイレクトを手動で処理
-      // validateStatus: status => status >= 200 && status < 400, // 302 を許可
+      maxRedirects: 0, // リダイレクトを手動で処理
+      validateStatus: status => status >= 200 && status < 400, // 302 を許可
     });
 
     // ステップ2: Location ヘッダーからリダイレクト先を取得
-    // const redirectUrl = postResponse.headers.location;
-    // if (!redirectUrl) {
-    //   return res.status(500).json({ error: "リダイレクト先が見つかりません。" });
-    // }
+    const redirectUrl = postResponse.headers.location;
+    if (!redirectUrl) {
+      return res.status(500).json({ error: "リダイレクト先が見つかりません。" });
+    }
 
     // ステップ3: GETリクエストをリダイレクト先に送信（←ここ重要）
-    // const finalResponse = await axios.get(redirectUrl, {
-    //   headers: { "Accept": "application/json" },
-    // });
+    const finalResponse = await axios.get(redirectUrl, {
+      headers: { "Accept": "application/json" },
+    });
 
     // ステップ4: 最終レスポンスをBubbleへ返却
-    // res.status(finalResponse.status).json(finalResponse.data);
-    res.status(postResponse.status).json(postResponse.data);
+    res.status(finalResponse.status).json(finalResponse.data);
 
   } catch (error) {
     console.error("エラー:", error.message);
