@@ -19,6 +19,7 @@ app.post("/proxy", async (req, res) => {
 
     // ステップ2: Location ヘッダーからリダイレクト先を取得
     const redirectUrl = postResponse.headers.location;
+    console.log("リダイレクト先:", redirectUrl);
     if (!redirectUrl) {
       return res.status(500).json({ error: "リダイレクト先が見つかりません。" });
     }
