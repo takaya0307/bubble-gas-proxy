@@ -30,20 +30,7 @@ app.post("/proxy", async (req, res) => {
     });
 
     // ステップ4: 最終レスポンスをBubbleへ返却
-    const contentType = finalResponse.headers["content-type"] || "";
-
-    if (!contentType.includes("application/json")) {
-      console.warn("❌ JSON以外のレスポンス:", contentType);
-      return res.status(500).json({
-        error: "GASから想定外のレスポンス形式を受信しました",
-        contentType,
-        raw: finalResponse.data,
-      });
-    }
-
-    // 最終レスポンスを Bubble に返す（常に 200 OK として）
-    res.status(200).json(finalResponse.data);
-
+    res.status(finalResponse.status).json(finalResponse.data);
 
   } catch (error) {
     console.error("エラー:", error.message);
